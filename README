@@ -1,0 +1,78 @@
+The Example DataAnalysis Framwork
+
+Getting started
+
+Build the program with "make"
+any source named test*.cxx will be converted into an executable.
+One executable, testSimple.cxx is provided please edit this file for further use.
+
+Please consult the scripts scripts/simpletest.sh and the unittests 
+for example on how to run. The unittests are in the subdirectory unittests
+To run the unit tests type  cd unittests; make
+The executable of the unittests is unittests/uttest.exe
+
+If you create a new class, a new unittest class is created as well. 
+Once you have edited your test class you need to include your test 
+into uttest.cxx.  
+
+There is an event viewer macro in scripts/evtdisplay.C that runs 
+of the root-file output of testFramework.exe 
+Usage: 
+//  root -l outputfile.root
+//  .L scripts/evtdisplay.C
+//  evtdisplay(0) 
+
+-----------------------------------------
+
+Rules for adding new Classes to the project
+
+* Each data item inherits from class DataItem
+* Each DataItem has to start with the letters DI
+No Non-DataItem class should start with DI, otherwise the autmatic dictionary
+code code will not compile
+use scripts/CreateDataItem.sh DIClassname to create an empty frame for a class
+
+Rules for the DataItems init function
+* Every piece of data within the DataItem class must be read and written in the Read/Write function
+
+Every Processor inherits from class Processor. Use ExampleProcessor as a
+template to start your own processor. You might also want to use the script 
+scripts/CreateProcessor.sh ProcName
+
+A processor can access central storage to retrieve DataCollections and return
+data to storage.
+Once an event has been processed by all processors, all data in storage is
+stored in the output file.
+
+Tips for hanlding vectors and Lorentz vectors (FourVectors).
+closely scrutinize the ROOT classes and TVector3, TLorentzVector.
+Use these classes and their functions!
+TVector3::DeltaR() and TLorentzVector.DeltaR() are good distance measures for vecotrs in hadron collider kinematics.
+
+list of files in the data directory
+* Single electron or muon files  data/electronXXGeV.dat  
+  The GeV number refers to the transverse momentum
+* Lepton pair files: dimuon.dat and dielectron.dat
+  Files containing W bosons and jets (W -> e+- and a neutrino and W -> muon+- and a neutrino) w_and_jets.dat
+  Files containing Z bosons and jets (Z -> e+e- and Z->muon+ muon-) z_and_jets.dat
+  For background studies a sample with single charged pions: chargedpion20GeV.dat
+  Please note that the file "wboson.dat" has been renamed to w_and_jets.dat
+  The files data/data01-20.dat have also been removed. Instead use z_and_jets.dat
+
+Some remarks on getting a 4-momentumn for a higher-level object.
+Should you have the 3-momentum of the object and you know the objects mass,
+use E^2 = p^2 + m^2  in natural units
+On the other hand, if you have the energy of an object and its mass and the  flight direction (in polar and azimuthal angle theta and phi)
+You get the momentum magnitude
+p = Sqrt(E^2 - m^2)
+The x,y,z components of the momentum are easy to calculate
+
+px = p* cos(theta)*sin(phi)
+py ...
+pz ...
+
+The flight direction if typically End_position - Start_position. To some approximation the start point of most particles is the detector origin (0,0,0).
+The filght direction is thus equivalent to the end position.
+
+// Author: Eckhard v. Toerne
+

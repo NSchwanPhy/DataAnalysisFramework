@@ -1,0 +1,6 @@
+*.dat
+*.root
+*/*.dat
+*/*.root
+*.o
+*.exe

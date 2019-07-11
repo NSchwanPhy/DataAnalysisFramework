@@ -1,0 +1,79 @@
+#ifndef UTDIElectron_H
+#define UTDIElectron_H
+
+#include "UnitTest.h"
+#include "DIElectron.h"
+
+#include "TString.h"
+#include "TFile.h"
+#include "TMath.h"
+
+#include "Framework.h"
+#include "CentralStorage.h"
+#include "DIElectron.h"
+#include "CaloClusterer.h"
+#include "TrackerRawHitProcessor.h"
+#include "CaloRawHitProcessor.h"
+// DIElectron unit tests
+
+namespace ExampleFramework {
+
+class utDIElectron : public UnitTesting::UnitTest
+{
+private:
+   TString fOutFileName;
+   TString fROOTName;
+   TFile* fROOTFile;
+   CentralStorage* fStorage;
+
+public:
+   utDIElectron() 
+      : UnitTest("DIElectron"), fROOTName("out.root"), fOutFileName("out.dat"), fROOTFile(0)
+   { }
+
+   void run() {
+     fStorage = new CentralStorage("utDIElectron.dat",1010);
+     fStorage->SetInputFile(new AnalysisFile("outrun.dat","read")); 
+     fStorage->ReadRunHeader();
+     fStorage->ReadNextEvent();
+     const DataCollection* trkcol = fStorage->RetrieveData("TrackCollection","DITrack");
+      const DataCollection* cluscol = fStorage->RetrieveData("CaloClusterCollection","DICaloCluster");
+     const DITrack* trk=dynamic_cast<const DITrack*>(*(trkcol->begin()));
+     const DICaloCluster* clus=dynamic_cast<const DICaloCluster*>(*(cluscol->begin()));
+
+     DataCollection* eleccol = new DataCollection();
+     int newid=4400;
+     DIElectron* elec = new DIElectron((DITrack*) trk, (DICaloCluster*) clus , newid++); // ToDo implement correct consttructor with const, avoid hardcoded casts;
+     double eOverP=elec->GetEOverP();
+     double ptrack = elec->GetTrack()->GetMomentumAtPCA().Mag();
+     double eclus  =  elec->GetCluster()->GetEnergy()
+     test_(fabs(eOverP - eclus/ptrack)<1.e-3);   
+     eleccol->push_back(elec);
+     fStorage->StoreData("ElectronCollection",eleccol);
+     test_(elec->GetCharge() !=0);
+     fStorage->PrintStorage();
+     fStorage->WriteRunHeader();
+     fStorage->WriteEvent();
+     delete fStorage;
+     fStorage = new CentralStorage("out.dat",1010);
+     fStorage->SetInputFile(new AnalysisFile("utDIElectron.dat","read"));
+     fStorage->ReadRunHeader();
+     fStorage->ReadNextEvent();
+     const DataCollection* eleccol2 = fStorage->RetrieveData("ElectronCollection","DIElectron");
+     
+     test_(eleccol2->size()==1);
+     const DIElectron* readelec=dynamic_cast<const DIElectron*>(*(eleccol2->begin()));
+     test_(readelec);
+     test_(readelec->GetTrack());
+     test_(readelec->GetCluster());
+     test_(fabs(eOverP - readelec->GetEOverP())<1.e-4);
+     test_(fabs(ptrack - readelec->GetTrack()->GetMomentumAtPCA().Mag())<1.e-3);
+     test_(fabs(eclus - elec->GetCluster()->GetEnergy())<1.e-3);
+
+     delete fStorage;
+   }
+
+};
+
+}
+#endif

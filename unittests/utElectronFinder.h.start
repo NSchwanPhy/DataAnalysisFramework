@@ -1,0 +1,96 @@
+#ifndef UTElectronFinder_H
+#define UTElectronFinder_H
+
+#include "UnitTest.h"
+#include "ElectronFinderProcessor.h"
+
+#include "TString.h"
+#include "TFile.h"
+#include "TMath.h"
+
+#include "Framework.h"
+#include "ToyDataCreator.h"
+#include "PrintTrackerHits.h"
+#include "TrackFinder.h"
+#include "CaloClusterer.h"
+#include "SiliconClusterer.h"
+#include "TrackerRawHitProcessor.h"
+#include "CaloRawHitProcessor.h"
+// ElectronFinderProcessor unit tests
+
+using namespace ExampleFramework;
+
+class utElectronFinder : public UnitTesting::UnitTest
+{
+private:
+   TString fOutFileName;
+   TString fROOTName;
+   TFile* fROOTFile;
+
+public:
+   utElectronFinder() 
+      : UnitTest("ElectronFinder"), fROOTName("electronfinder.root"), fOutFileName("electronfinder.dat"), fROOTFile(0)
+   { }
+
+   void init(char* name) {
+      if (fROOTFile) fROOTFile->Close();
+      int jobID=138;
+      vector <TString> inlist;
+      inlist.push_back(name); 
+      Framework* theFramework = new Framework(inlist, fOutFileName, jobID);
+      theFramework->AddProcessor(new TrackerRawHitProcessor(theFramework));
+      theFramework->AddProcessor(new SiliconClusterer(theFramework));
+      theFramework->AddProcessor(new CaloRawHitProcessor(theFramework));
+      theFramework->AddProcessor(new CaloClusterer(theFramework));
+      TrackFinder* trkfinder = new TrackFinder(theFramework);
+      trkfinder->SetProperty("InputCollection","ClusteredTrackerHitCollection");
+      theFramework->AddProcessor(trkfinder);
+      ElectronFinderProcessor* finder = new ElectronFinderProcessor(theFramework);
+      theFramework->AddProcessor(finder);      
+      theFramework->ProcessAll();
+      delete theFramework;
+      fROOTFile=TFile::Open(fROOTName);
+   }
+   
+   void run_e20(){      
+      init("../data/electron20GeV.dat");
+      TH1D* hep = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/EoverP");
+      TH1D* hnelec = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/NElectron");
+      TH1D* hpt = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/Pt");
+      //cout << "Tracker Pulse Mean=" << hist->GetMean()<<endl;
+      test_(TMath::Abs(hnelec->GetMean()-1.)<0.5);
+      test_(TMath::Abs(hnelec->GetMean()-1.)<0.1);
+      test_(TMath::Abs(hep->GetMean()-1.)<0.5);
+      test_(TMath::Abs(hep->GetMean()-1.)<0.25);
+      test_(TMath::Abs(hpt->GetMean()-20000.)/20000.<0.2);
+      test_(hpt->GetRMS()/hpt->GetMean()<0.18);
+   }
+   void run_dielectron(){
+      init("../data/dielectron.dat");
+      TH1D* hnelec = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/NElectron");
+      test_(TMath::Abs(hnelec->GetMean()-2.)<0.5);      
+   }
+   void run_zjets(){
+      init("../data/z_and_jets.dat");
+      TH1D* hnelec = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/NElectron");
+      // 50% Z-->ee, 50% Z-->mumu, expected average Nelec=1      
+      test_(TMath::Abs(hnelec->GetMean()-1.)<0.5); 
+   }
+   void run_wjets(){
+      init("../data/w_and_jets.dat");
+      TH1D* hnelec = (TH1D*) fROOTFile->Get("ElectronFinderProcessor/NElectron");
+      // 50% W-->enu, 50% W-->munu, expected average Nelec=0.5      
+      test_(TMath::Abs(hnelec->GetMean()-0.5)<0.25); 
+   }
+   void run() 
+   {
+      std::cout << "warning electron finder is just a dummy"<<std::endl;
+      std::cout << "therefore some electron finder unittests are commented out"<<std::endl;
+      run_e20();
+      //run_dielectron(); //ToDo comment these tests in
+      //run_zjets();  //ToDo comment these tests in
+      //run_wjets();  //ToDo comment these tests in
+   }
+
+};
+#endif
