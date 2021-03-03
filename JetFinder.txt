@@ -1,0 +1,19 @@
+Structur:
+
+select algorithm typ by SetProperty()
+Use as input CaloCusters    (from CaloClusterer)
+differnt JetFinder as indefidual classes. Do I want a motherclass?
+
+
+kt-algorithm:
+
+Use TVector3::deltaR() as Rij
+Use TVector3::Pt()    as kt
+
+Parameter:
+vector<double>  kt;          // stores the transfers momentum for each particle i
+vector<double>  Rij;
+vector<double>  dij;         // kt distance (between particle i and j)
+vector<double>  diB;        //  beam distance (between particle i and the beam)
+
+

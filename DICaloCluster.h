@@ -44,8 +44,10 @@ class DICaloCluster : public DataItem
    double GetPhi() const {return fV.Phi();}
    int GetSize() const {return fCaloHits.size();} 
    const TVector3& GetV() const {return fV;}
+   vector <const DataItem* > GetCaloHits() const { return fCaloHits; }
    TVector3 GetMomentum() const {return (fEnergy/fV.Mag())*fV;}
    double GetLayerQuantile(double fraction) const; //!< layer up to which the given fraction of cluster energy is deposited
+   
 
    MyDef(DICaloCluster) 
 protected:

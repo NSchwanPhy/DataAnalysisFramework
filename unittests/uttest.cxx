@@ -15,6 +15,11 @@
 //#include "utDIElectron.h"
 #include "utDICaloCluster.h"
 #include "utCaloClusterer.h"
+#include "utDICaloJet.h"
+#include "utJetFinder.h"
+#include "utkt_algorithm.h"
+#include "utFastKtAlgorithm.h"
+#include "utConeAlgorithm.h"
 //#include "utElectronFinder.h"
 
 using namespace UnitTesting;
@@ -39,6 +44,11 @@ int main()
    test_DataCreator.addTest(new utDIClusteredTrackerHit);
    test_DataCreator.addTest(new utCaloClusterer);
    test_DataCreator.addTest(new utDICaloCluster);
+   test_DataCreator.addTest(new utDICaloJet);
+   test_DataCreator.addTest(new utJetFinder);
+   test_DataCreator.addTest(new utkt_algorithm);
+   test_DataCreator.addTest(new utFastKtAlgorithm);
+   test_DataCreator.addTest(new utConeAlgorithm);
    test_DataCreator.run();
    long int nFail = test_DataCreator.report();
    cout << "Total number of failures: " << nFail << endl;

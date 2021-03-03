@@ -1,0 +1,116 @@
+************************************************************************************************
+* S T R E S S and U N I T test suite                                                           *
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : CentralStorage (file )
+************************************************************************************************
+problem in Service::CentralStorage exiting ... = problem is: key has a space character=Run Number 
+problem in Service::CentralStorage exiting ... = problem is: key already used RunNumber 
+problem in Service::CentralStorage exiting ... = problem is: dataitem was already entered, name=RunNumber2 i=0 
+ERROR in CentralStorage, did not find key=Run Number Type=donotcare
+List of stored items
+Name=RunNumber Type=DIRunNumber size=1
+ERROR in CentralStorage, did not find key=RunNumberXX Type=donotcare
+List of stored items
+Name=RunNumber Type=DIRunNumber size=1
+ERROR in CentralStorage, trying to access data with correct key and wrong type, requested=RunNumber of type DIWrong actual type is=DIRunNumberERROR in CentralStorage, did not find key=RunNumber4 Type=DIRunNumber
+List of stored items
+************************************************************************************************
+* Starting U N I T test : HistogramService (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : PropertyHandler (file )
+************************************************************************************************
+Properties of object:
+d1=4.000000 type=double
+i1=5 type=int
+i2=3 type=int
+test if we get desired error exceptions
+PropertyHandler could not find key=xxx, exiting...
+Properties of object:
+d1=4.000000 type=double
+i1=2 type=int
+i2=3 type=int
+PropertyHandler wrong key type, key=d1, type=double exiting...
+PropertyHandler ERROR key=i1 of type=int is already defined, exiting...
+error exception tests done
+************************************************************************************************
+* Starting U N I T test : TestRun (file )
+************************************************************************************************
+Tracker Pulse Mean=30.5923
+************************************************************************************************
+* Starting U N I T test : TrackFinder (file )
+************************************************************************************************
+Garbage collector, deleting id=23
+Garbage collector, deleting id=12
+Garbage collector, deleting id=31
+Garbage collector, deleting id=29
+Garbage collector, deleting id=16
+************************************************************************************************
+* Starting U N I T test : SiliconClusterer (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : DITrack (file )
+************************************************************************************************
+List of stored items
+List of stored items
+Name=TrackerHitCollection Type=DITrackerHit size=4
+Name=TrackCollection Type=DITrack size=1
+Garbage collector, deleting id=304
+************************************************************************************************
+* Starting U N I T test : DIClusteredHits (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : CaloClusterer (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : DICaloCluster (file )
+************************************************************************************************
+quantiles 0.666667 99=1.97333
+************************************************************************************************
+* Starting U N I T test : DICaloJet (file )
+************************************************************************************************
+Garbage collector, deleting id=10
+Garbage collector, deleting id=11
+Garbage collector, deleting id=12
+Garbage collector, deleting id=13
+************************************************************************************************
+* Starting U N I T test : JetFinder (file )
+************************************************************************************************
+Garbage collector, deleting id=10
+Garbage collector, deleting id=11
+Garbage collector, deleting id=12
+Garbage collector, deleting id=13
+Garbage collector, deleting id=10
+Garbage collector, deleting id=11
+Garbage collector, deleting id=12
+Garbage collector, deleting id=13
+************************************************************************************************
+* Starting U N I T test : KtAlgorithm (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : FastKtAlgorithm (file )
+************************************************************************************************
+************************************************************************************************
+* Starting U N I T test : ConeAlgorithm (file )
+************************************************************************************************
+************************************************************************************************
+* U N I T test : Summary                                                                *
+************************************************************************************************
+Test  0 : CentralStorage [13/13]..............................................................OK
+Test  1 : HistogramService [23/23]............................................................OK
+Test  2 : PropertyHandler [15/15].............................................................OK
+Test  3 : TestRun [1/1].......................................................................OK
+Test  4 : TrackFinder [4/4]...................................................................OK
+Test  5 : SiliconClusterer [5/5]..............................................................OK
+Test  6 : DITrack [12/12].....................................................................OK
+Test  7 : DIClusteredHits [11/11].............................................................OK
+Test  8 : CaloClusterer [48/48]...............................................................OK
+Test  9 : DICaloCluster [12/12]...............................................................OK
+Test 10 : DICaloJet [16/16]...................................................................OK
+Test 11 : JetFinder [5/5].....................................................................OK
+Test 12 : KtAlgorithm [24/24].................................................................OK
+Test 13 : FastKtAlgorithm [24/24].............................................................OK
+Test 14 : ConeAlgorithm [48/48]...............................................................OK
+Total number of failures: 0
+*********************************************

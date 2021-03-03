@@ -12,7 +12,7 @@ namespace ExampleFramework {
    Momentum resolution is about 20% at 10 GeV. This finder combines hits 
    in different layers if they match in eta-phi space. 
    Finder is not capable to do real pattern recognition.
-   Please not that the TrackFinder runs by default on the TrackerHits. 
+   Please note that the TrackFinder runs by default on the TrackerHits. 
    Better performance is achieved if run on ClusteredTrackerHits. 
    See class SiliconClusterer for details.
    (c) E. von Toerne, U. of Bonn 2010
